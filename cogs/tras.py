@@ -107,14 +107,17 @@ class tras(commands.Cog):
         four=discord.ui.Button(style=discord.ButtonStyle.link,
                                url="https://www.youtube.com/channel/UCFINNqRcNcOAemuyKdBiDpA?sub_confirmation=1",
                                label="Four Gaming Studio")
+        lin=discord.ui.Button(style=discord.ButtonStyle.link,url="https://github.com/FourGamingStudio/FGS_musicdiscord.py",label="Mã nguồn bot")
         a.clear_items()
         a.add_item(sup)
         a.add_item(four)
+        a.add_item(lin)
         em=discord.Embed(title=f"Thông tin bot {self.client.user.name}",description="", color=discord.Colour.random())
         em.add_field(name=self.client.user.name,value=f"""Xin chào tôi là {self.client.user.name}. 
         - Tôi được sinh ra trong lúc thằng chủ tôi rảnh rỗi 😂.
         - Bot được phát triển bởi [JACK.VN](https://discord.gg/SdxTxrYu8k) - [Four Gaming Studio](https://www.youtube.com/channel/UCFINNqRcNcOAemuyKdBiDpA?sub_confirmation=1).
-        - Bạn có thể sử dụng lệnh `/help` để biết thêm các lệnh mà bạn có thể tương tác với tôi.""") 
+        - Bạn có thể sử dụng lệnh `/help` để biết thêm các lệnh mà bạn có thể tương tác với tôi.
+        - [Bạn đang hỏi mã nguồn ở đâu? vâng nó ở đây](https://github.com/FourGamingStudio/FGS_musicdiscord.py)""") 
         await ctx.response.send_message(embed=em,view=a)
       
     
