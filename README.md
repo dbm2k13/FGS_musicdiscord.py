@@ -1,2 +1,2 @@
 # FGS_musicdiscord.py
-hmmm
+pip install FourGamingStudio/FGS_musicdiscord.py
