@@ -1,0 +1,9 @@
+{
+	"prefix": ["F" , "/" , "f" ], 
+
+    "token": "token",
+
+	"bot_client_id" : "bot",
+	"client_id":"spotify",
+	"client_secret":"spotify"
+}
