@@ -8,7 +8,7 @@
 ```
 pip install -r requirements.txt
 ```
-[Thì đó làm như video là được, còn nếu làm không được nữa thì vào server discord để mình hỗ trợ. (nhớ đem theo chai dầu ăn)](https://youtu.be/JERydBfzTEU)
+[Thì đó làm như video là được](https://youtu.be/JERydBfzTEU), còn nếu làm không được nữa thì vào [server discord](https://discord.gg/sdBzRmfbtK) để mình hỗ trợ. (nhớ đem theo chai dầu ăn)
 ![DISCORDPY](https://github.com/FourGamingStudio/FGS_musicdiscord.py/assets/123074279/7d33c3be-5877-4c3d-a1f5-51caf604956c)
 - Dòng chữ này: http://google.com/callback/
 - Discord developer portal: https://discord.com/developers/applications
