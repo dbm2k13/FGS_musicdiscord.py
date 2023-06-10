@@ -207,7 +207,7 @@ class music(commands.Cog):
             if len(remainingChannelMembers) == 1 and remainingChannelMembers[0].id == self.bot.user.id:
                 self.is_playing[id] = False
                 self.is_paused[id] = False
-                self.vc[id]==None
+                self.vc[id]=None
                 await before.channel.send("im out")
                 self.clearlist(member)
                 await self.vc[id].disconnect()
