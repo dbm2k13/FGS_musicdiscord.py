@@ -1,13 +1,13 @@
 import discord,os,json,math,re,requests,typing
-import time as t
 from datetime import *
 from pytube import *
 from discord.ext import commands
 from discord import app_commands
-import youtube_dl
+import yt_dlp
 from asyncio import run_coroutine_threadsafe
 from numerize import numerize
 from fakemodule import ytb
+            
 class MyView(discord.ui.View): 
     def __init__(self,em,server):
         super().__init__(timeout=None)
@@ -107,6 +107,7 @@ class MyView(discord.ui.View):
 class music(commands.Cog):
     def __init__(self,bot):
         self.bot =bot
+        self.checkforvideos.start()
         self.laspositon={}
         self.votesk={}
         self.is_playing = {}
@@ -127,8 +128,10 @@ class music(commands.Cog):
     'default_search': 'auto',
     'source_address': '0.0.0.0',  # bind to ipv4 since ipv6 addresses cause issues sometimes
 }
-        self.ffmpeg_options = {'options': '-vn'}
-        self.ytdl = youtube_dl.YoutubeDL(self.ytdl_format_options)
+        self.ffmpeg_options = {'options': '-vn',
+    "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
+}
+        self.ytdl = yt_dlp.YoutubeDL(self.ytdl_format_options)
         self.vc = {}
     def creat_embed(self, ctx, song,why):
         title = song['ti']
@@ -202,25 +205,23 @@ class music(commands.Cog):
     async def on_voice_state_update(self, member, before, after):
         # if the trigger was the bot and the action was joining a channel
         id = int(member.guild.id)
+
         if member.id != self.bot.user.id and before.channel != None and after.channel != before.channel:
             remainingChannelMembers = before.channel.members
             if len(remainingChannelMembers) == 1 and remainingChannelMembers[0].id == self.bot.user.id:
+                await self.vc[id].disconnect()
                 self.is_playing[id] = False
                 self.is_paused[id] = False
                 self.vc[id]=None
-                await before.channel.send("im out")
                 self.clearlist(member)
-                await self.vc[id].disconnect()
-                
+                return
         if member.id != self.bot.user.id and before.channel == None and after.channel != before.channel:
             remainingChannelMembers = after.channel.members
-            if len(remainingChannelMembers) >= 1 and remainingChannelMembers[0].id != self.bot.user.id:
+            if len(remainingChannelMembers) >= 1 :
                 if self.vc[id]==None:
                     self.vc[id]=await after.channel.connect()
-
-
-
-
+                    return
+    @commands.Cog.listener()
     async def join_vc(self,ctx,channel):
         id = int(ctx.guild.id)
         if self.vc[id]==None or not self.vc[id].is_connected():
@@ -629,7 +630,7 @@ class music(commands.Cog):
         
         song =self.music_queue[id][0]
         self.music_queue[id].insert(1,song)
-        message = self.creat_embed(ctx, song,"loop")
+        message = self.creat_embed(ctx, song[0],"loop")
         await ctx.followup.send(embed=message['em'],view=message['view'])
 
     @app_commands.command(name="postchannel")
@@ -758,6 +759,5 @@ class music(commands.Cog):
             await ctx.response.send_message(f"Đã đặt kênh {channel.mention} làm kênh đăng video!")
         else:
             await ctx.response.send_message(embed=self.messem(ctx,"Bạn không có quyền thực hiện lênh này!"))
-
 async def setup(bot):
     await bot.add_cog(music(bot))
