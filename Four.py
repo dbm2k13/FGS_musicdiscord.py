@@ -3,7 +3,6 @@ from discord.ext import commands
 #---------------------------------------------------------#
 with open('jsonfile/config.json', 'r') as f:
     Config = json.load(f)
-chennal = Config['chennal']
 prefix = Config['prefix']
 token = Config['token']
 bot_client_id = Config['bot_client_id']
