@@ -11,9 +11,6 @@ client_id= Config['sclient_id']
 client_secret= Config['sclient_secret']
 sp = spotipy.Spotify(auth_manager= SpotifyClientCredentials(client_id=client_id,client_secret=client_secret))
 SCOPES = ["https://www.googleapis.com/auth/youtube.force-ssl"]
-
-
-
 def youtube_authenticate():
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
     api_service_name = "youtube"
@@ -100,11 +97,10 @@ def getidspo(value):
     return None
 
 def to_seconds(timestr):
-    seconds= 0
-    for part in timestr.split(':'):
-        seconds= seconds*60 + int(part, 10)
-    return seconds
-
+    d,h, m, s = timestr.split(':')
+    hh=+int(d)*24
+    h=int(h)+hh
+    return int(h) * 3600 + int(m) * 60 + int(s)
 def print_video_infos(youtube,video_response):
     items = video_response.get("items")[0]
     # get the snippet, statistics & content details from the video response
@@ -145,7 +141,17 @@ def print_video_infos(youtube,video_response):
         duration+="00M"
     if "S" not in duration:
         duration+="00S"
-    parsed_duration=re.search(f"PT(\d+H)?(\d+M)?(\d+S)", duration)
+    if "H" not in duration:
+        if "D" in duration:
+            cc=duration.find('T')+1
+        else:
+            cc=2
+        aa=duration[:cc]+'00H'
+        duration=aa+duration[cc:]
+    if "D" not in duration:
+        aa='P00DT'
+        duration=aa+duration[2:]
+    parsed_duration=re.search(f"P(\d+D)?T(\d+H)?(\d+M)?(\d+S)", duration)
     parsed_duration=parsed_duration.groups()
     duration_str = ""
     for d in parsed_duration:
