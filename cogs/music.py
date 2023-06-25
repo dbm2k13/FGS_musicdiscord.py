@@ -128,7 +128,7 @@ class music(commands.Cog):
     'default_search': 'auto',
     'source_address': '0.0.0.0',  # bind to ipv4 since ipv6 addresses cause issues sometimes
 }
-        self.ffmpeg_options = {'options': '-vn',
+        self.ffmpeg_options = {
     "before_options": "-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"
 }
         self.ytdl = yt_dlp.YoutubeDL(self.ytdl_format_options)
