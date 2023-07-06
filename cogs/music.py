@@ -107,7 +107,6 @@ class MyView(discord.ui.View):
 class music(commands.Cog):
     def __init__(self,bot):
         self.bot =bot
-        self.checkforvideos.start()
         self.laspositon={}
         self.votesk={}
         self.is_playing = {}
