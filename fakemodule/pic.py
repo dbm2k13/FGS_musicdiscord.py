@@ -2,6 +2,9 @@ from PIL import Image,ImageDraw,ImageFont
 import requests
 from io import BytesIO
 from numerize import numerize
+from PIL import Image,ImageDraw,ImageFont
+from random import randrange
+import json
 def pic(username,av,rank,level,current_exp,max_exp,url):
 
     response = requests.get(url)
@@ -39,8 +42,6 @@ def pic(username,av,rank,level,current_exp,max_exp,url):
     draw.text((950-w,130), exp,font=myFont, fill="white",stroke_width=1,stroke_fill=(0, 0, 0))
 
     bar_exp = (current_exp/max_exp)*619
-    if bar_exp <= 50:
-            bar_exp = 50  
 
     im = Image.new("RGBA", (620, 51))
     draw = ImageDraw.Draw(im, "RGBA")
@@ -52,4 +53,42 @@ def pic(username,av,rank,level,current_exp,max_exp,url):
     back.save(image, 'PNG')
     image.seek(0)
     return image
+def votepic(serverid):
+    with open('jsonfile/vote.json','r') as expp:
+        users = json.load(expp)
+        
+    text=193
+    TiT=0
+    for i in users[serverid]:
+        if users[serverid][i]['Name'] != None:
+            TiT+=int(users[serverid][i]['T'])
+            text+=193
+    cut = Image.new("RGB", (1920,text+100) , (50,50,50))
+    myFont = ImageFont.truetype("./avpic/Shrikhand-Regular-SVG.ttf",100)
+    draw = ImageDraw.Draw(cut, "RGB")
+    draw.text((600,30), text=f"Cuộc Bỏ phiếu",font=myFont, fill="white",stroke_width=1,stroke_fill=(0, 0, 0))
+    myFont = ImageFont.truetype("./avpic/Shrikhand-Regular-SVG.ttf",50)
+    a=193
+    y1=193
+    y2=0
 
+    for i in users[serverid]:
+        if users[serverid][i]['Name'] != None:
+            a+=27
+            T=int(users[serverid][i]['T'])
+            y1+=96.5
+            y2=y1+86.5
+            draw.rounded_rectangle((50 , y1, 1820, y2 ), fill=(180, 180, 180),outline="black",width=3,radius=10)
+            rand_color = (randrange(110,255), randrange(110,255), randrange(110,255))
+            if T != 0:
+                draw.rounded_rectangle((50 , y1, (T/TiT)*1820, y2 ), fill=rand_color,outline="black",width=3,radius=10)
+                draw.text((50,a), text=f"{users[serverid][i]['Name']}: {T} ---> {round((T/TiT)*100,2)}%",font=myFont, fill=rand_color,stroke_width=1,stroke_fill=(0, 0, 0))
+            else:
+                draw.text((50,a), text=f"{users[serverid][i]['Name']}: {T} ---> 0%",font=myFont, fill=rand_color,stroke_width=1,stroke_fill=(0, 0, 0))
+            a+=166
+            y1+=96.5
+    draw.text((1200,text+25), f"Tổng: {TiT}",font=myFont, fill="white",stroke_width=1,stroke_fill=(0, 0, 0))
+    image = BytesIO()
+    cut.save(image, 'PNG')
+    image.seek(0)
+    return image
