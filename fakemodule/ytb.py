@@ -3,10 +3,10 @@ import spotipy,json,urllib.parse,re
 from spotipy.oauth2 import SpotifyClientCredentials
 from urllib.parse import parse_qs, urlparse
 
-with open('jsonfile/API.json', 'r') as f:
+with open('jsonfile/config.json', 'r') as f:
     Config = json.load(f)
-client_id= Config['sclient_id']
-client_secret= Config['sclient_secret']
+client_id= Config['client_id']
+client_secret= Config['client_secret']
 sp = spotipy.Spotify(auth_manager= SpotifyClientCredentials(client_id=client_id,client_secret=client_secret))
 
 def get_playlist_id(playlist_url):
