@@ -6,7 +6,11 @@
 [ ![discord-s][] ][discord-i] [ ![discord-shield][] ][discord-invite]
 # How to use:
 ```
-pip install -r requirements.txt
+pip install -r requirements.txt --upgrade
+```
+vì khi cái dự án này đến tay bạn thì có thể tất cả các packages đã bị lỗi thời, để chắc chắn các bạn hãy chạy thêm lệnh này.
+```
+pip freeze | %{$_.split('==')[0]} | %{pip install --upgrade $_}
 ```
 [Thì đó làm như video là được](https://youtu.be/JERydBfzTEU), còn nếu làm không được nữa thì vào [server discord](https://discord.gg/sdBzRmfbtK) để mình hỗ trợ. (nhớ đem theo chai dầu ăn)
 ![DISCORDPY](https://github.com/FourGamingStudio/FGS_musicdiscord.py/assets/123074279/7d33c3be-5877-4c3d-a1f5-51caf604956c)
