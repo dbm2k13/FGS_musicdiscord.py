@@ -215,7 +215,8 @@ class music(commands.Cog):
         embed.add_field(name="Ngày Xuất Bản",value=upload_date,inline=True)
         embed.add_field(name="Thời Lượng",value=duration,inline=True)
         embed.add_field(name="Lượt Xem",value=numerize.numerize(int(view_count)),inline=True)
-        embed.add_field(name="Lượt Like",value=numerize.numerize(int(like_count)),inline=True)
+        if like_count !=None:
+            embed.add_field(name="Lượt Like",value=numerize.numerize(int(like_count)),inline=True)
         embed.set_image(url=thumbnail)
         embed.set_footer(text=f'Bài hát được thêm bởi: {str(user.name)}', icon_url=avatar)
         return embed
