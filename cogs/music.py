@@ -282,8 +282,8 @@ class music(commands.Cog):
     def play_next(self, ctx):
         channel = self.bot.get_channel(ctx.channel_id)
         id = int(ctx.guild.id)
-        if self.music_queue[id] !=[] and len(self.music_queue[id]) > 0:
-            self.music_queue[id].pop(0)
+        self.music_queue[id].pop(0)
+        if self.music_queue[id] !=[] and len(self.music_queue[id]) != 0:
             song = self.music_queue[id][0][0]
             ctxx = self.music_queue[id][0][1]
             message = self.creat_embed(song,"now",ctxx)
