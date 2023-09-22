@@ -6,7 +6,7 @@ from asyncio import run_coroutine_threadsafe
 from numerize import numerize
 from fakemodule import ytb
 from discord import SyncWebhook
-
+yt_dlp.utils.bug_reports_message = lambda: ''
 class MyView(discord.ui.View): 
     def __init__(self,em,server):
         super().__init__(timeout=None)
@@ -124,7 +124,6 @@ class music(commands.Cog):
         'quiet': True,
         'no_warnings': True,
         'default_search': 'auto'}
-        self.ffmpeg_options = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5','options': '-vn'}
         self.ytdl = yt_dlp.YoutubeDL(self.ytdl_format_options)
         self.vc = {}
     def parse_duration(self,duration: int):
@@ -283,9 +282,8 @@ class music(commands.Cog):
     def play_next(self, ctx):
         channel = self.bot.get_channel(ctx.channel_id)
         id = int(ctx.guild.id)
-        if self.music_queue[id] !=[]:
+        if self.music_queue[id] !=[] and len(self.music_queue[id]) > 0:
             self.music_queue[id].pop(0)
-        if self.music_queue[id] !=[]:
             song = self.music_queue[id][0][0]
             ctxx = self.music_queue[id][0][1]
             message = self.creat_embed(song,"now",ctxx)
@@ -297,7 +295,7 @@ class music(commands.Cog):
                 pass
             self.is_playing[id] = True
             self.is_paused[id] = False
-            self.vc[id].play(discord.FFmpegPCMAudio(song['url'],**self.ffmpeg_options), after=lambda e: self.play_next(ctx))
+            self.vc[id].play(discord.FFmpegPCMAudio(song['url'],before_options="-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"), after=lambda e: self.play_next(ctx))
         else:
             self.is_playing[id] = False
             self.vc[id].stop()
@@ -314,11 +312,11 @@ class music(commands.Cog):
         self.is_paused[id] = False
         if self.vc[id]==None or not self.vc[id].is_connected():
             await self.join_vc(ctx, channel)
-        song = song = self.music_queue[id][0][0]
+        song = self.music_queue[id][0][0]
         ctxx = self.music_queue[id][0][1]
         message = self.creat_embed(song,"now",ctxx)
         await ctx.followup.send(embed=message)
-        self.vc[id].play(discord.FFmpegPCMAudio(song['url'],**self.ffmpeg_options), after=lambda e: self.play_next(ctx))
+        self.vc[id].play(discord.FFmpegPCMAudio(song['url'],before_options="-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5"), after=lambda r: self.play_next(ctx))
     @app_commands.command(name="play")
     @app_commands.describe(url="Chơi nhạc trên youtube hoặc spotyfi!")
     async def play(self,  ctx: discord.Interaction,*,url:str) -> None:
